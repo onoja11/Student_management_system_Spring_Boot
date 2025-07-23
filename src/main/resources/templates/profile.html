@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+</head>
+<body class="bg">
+<!-- navbar starts -->
+<div th:replace="navbar :: navbar"></div>
+<!-- navbar ends -->
+
+<!-- body -->
+<section>
+    <div id="profile-section" class="container-fluid bg-dark w-100 position-relative d-flex pt-5 justify-content-between" style="height: 200px;">
+        <h3 class=" ms-md-5 mb-0 text-white" id="profile-header">My Profile</h3>
+        <h6 th:if="${authUser.role.name() == 'STUDENT'}" class=" me-md-5 me-3 pe-md-5 mt-5 text-white position-absolute end-0" id="course-header">Courses</h6>
+    </div>
+</section>
+<!-- body -->
+
+<!-- profile -->
+<section id="profile-content" class="">
+    <div class="row container bg-white m-auto mb-5 pb-5 pt-2 rounded-4 position-absolute shadow" style="top: 190px; left:0; right:0;">
+        <div class="col-12 mt-0">
+            <h5 class="d-flex justify-content-between">Contact Details
+                <small class="">
+                    <a href="" data-bs-toggle="tooltip" data-bs-placement="top" title="Change Password"><i class="fa-solid fa-lock d-inline d-md-none"></i></a>
+                    <a href="" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Account"><i class="fa-solid fa-trash d-inline d-md-none text-danger ms-2"></i></a>
+                    <a href="" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Profile"><i class="fa-solid fa-edit d-inline d-md-none text-dark ms-2"></i></a>
+                </small>
+            </h5>
+            <p>Contact details for you to use when travelling</p>
+        </div>
+        <div  alt="" class="col-2 rounded-circle border border border-2" style="height:150px; width:150px;">
+            <svg class="shrink-0 w-full h-full text-gray-300 bg-gray-100 dark:bg-gray-600"
+                    fill="currentColor"
+                    viewBox="0 0 24 24">
+                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+        </div>
+        <div class="col-10">
+            <form action="">
+                <div class="row mb-3">
+                    <div class="col-6 mb-2">
+                        <label for="email" class="form-label">Email</label>
+                        <input class="form-control bg-transparent" th:value="${authUser.email}" readonly>
+                    </div>
+                    <div class="col-6 mb-2">
+                        <label for="surname" class="form-label">Full Name</label>
+                        <input id="surname" class="form-control bg-transparent" th:value="${authUser.username}" readonly>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-6 mb-2">
+                        <label for="email" class="form-label">Matric Number</label>
+                        <input id="email" class="form-control bg-transparent" th:value="${authUser.matric_no}">
+                    </div>
+                    <div class="col-6 mb-2">
+                        <label for="mobile_phone" class="form-label">Role</label>
+                        <input id="mobile_phone" class="form-control bg-transparent" th:value="${authUser.role}" readonly>
+                    </div>
+                </div>
+                <div class="row justify-content-between">
+                    <div class="col-5">
+
+                        <a th:href="@{'/delete/{id}'  (id=${authUser.id})}"  class="btn btn-outline-danger p-2 rounded-0 w-50 d-none d-md-inline">Delete Account</a>
+                    </div>
+                    <div class="col-5 position-relative">
+                        <button class="btn btn-primary px-4 p-2 ms-5 rounded-0 position-absolute end-0 d-none d-md-inline">Edit Profile</button>
+                        <i class=""></i>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</section>
+<!-- profile -->
+
+<!-- course -->
+<section id="course-content" class="d-none">
+    <div class="row container bg-white m-auto mb-5 pb-5 pt-2 rounded-4 position-absolute shadow" style="top: 190px; left:0; right:0;">
+        <div class="col-12 mt-0">
+            <h5 class="d-flex justify-content-between">Courses
+
+            </h5>
+            <p>View your courses</p>
+        </div>
+        <div class="col-12">
+            <ul class="nav nav-tabs mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="pills-all-tab" data-bs-toggle="pill" href="#pills-all" role="tab" aria-controls="pills-all" aria-selected="true">
+                        <i class="fa-solid fa-list"></i> All
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
+
+                    <!-- Show alert if user has no courses -->
+                    <div th:if="${#lists.isEmpty(authUser.selectedCourses)}" class="alert alert-danger text-center fw-semibold shadow-sm rounded-3 mt-4">
+                        You have not selected any courses yet.
+                    </div>
+
+                    <!-- Display courses if available -->
+                    <div th:unless="${#lists.isEmpty(authUser.selectedCourses)}" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-3">
+                        <div class="col" th:each="course : ${authUser.selectedCourses}">
+                            <div class="card h-100 shadow  border-1 border-primary rounded-4">
+                                <div class="card-body">
+                                    <h5 class="card-title text-primary fw-bold mb-2" th:text="${course.courseCode}">Course Code</h5>
+                                    <p class="card-text text-muted" th:text="${course.courseTitle}">Course Title</p>
+                                </div>
+                                <div class="card-footer bg-transparent border-0 text-end">
+                                    <span class="badge bg-gradient text-bg-success px-3 py-2 rounded-pill">Selected</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+</section>
+<!-- history -->
+
+
+
+
+<!-- JavaScript Bundle with Popper -->
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.getElementById('profile-header').addEventListener('click', function() {
+        document.getElementById('profile-content').classList.remove('d-none');
+        document.getElementById('course-content').classList.add('d-none');
+
+    });
+
+    document.getElementById('course-header').addEventListener('click', function() {
+        document.getElementById('profile-content').classList.add('d-none');
+        document.getElementById('course-content').classList.remove('d-none');
+
+    });
+
+
+</script>
+</body>
+
+</html>

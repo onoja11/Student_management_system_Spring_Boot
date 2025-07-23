@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Register</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <style>
+        body {
+          background: linear-gradient(to right, #f8f9fa, #e9ecef);
+          min-height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .register-card {
+          background-color: white;
+          border-radius: 15px;
+          padding: 2rem;
+          box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+          width: 100%;
+          max-width: 500px;
+        }
+        .form-title {
+          text-align: center;
+          font-weight: 600;
+          margin-bottom: 1.5rem;
+        }
+        .form-label {
+          font-weight: 500;
+        }
+        .login-link {
+          display: block;
+          text-align: center;
+          margin-top: 1rem;
+        }
+        .error {
+          color: red;
+          font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="register-card">
+    <h2 class="form-title">Create Account</h2>
+
+    <form th:action="@{/register}" method="post" th:object="${user}">
+        <!-- Full Name -->
+        <div class="mb-3">
+            <label for="exampleInputUsername" class="form-label">Full Name</label>
+            <input type="text" th:field="*{username}" class="form-control" id="exampleInputUsername" required>
+            <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error"></div>
+        </div>
+
+        <!-- Matric Number -->
+        <div class="mb-3">
+            <label for="exampleInputMatric_no" class="form-label">Matric Number</label>
+            <input type="text" th:field="*{matric_no}" class="form-control" id="exampleInputMatric_no">
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+            <label for="exampleInputEmail" class="form-label">Email</label>
+            <input type="email" th:field="*{email}" class="form-control" id="exampleInputEmail" required>
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Password</label>
+            <input type="password" th:field="*{password}" class="form-control" id="exampleInputPassword1" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Register</button>
+        <a th:href="@{/login}" class="login-link">Already have an account? Login</a>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Choose Courses</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div th:replace="//navbar :: navbar"></div>
+
+<div th:if="${#lists.isEmpty(authUser.selectedCourses)}" class="container mt-5">
+
+    <h3 class="text-center mb-4">Choose Your Courses</h3>
+    <form th:action="@{/course/reg}" method="post" th:object="${courses}">
+        <div class="row">
+            <div class="col-md-6 mb-3" th:each="course : ${courses}">
+                <div class="form-check shadow-sm p-3 bg-white rounded">
+                    <input hidden="hidden" th:value="${authUser.id}">
+                    <input class="form-check-input" type="checkbox"
+                           th:id="${'course_' + course.id}"
+                           th:name="selectedCourses"
+                           th:value="${course.id}">
+                    <label class="form-check-label" th:for="${'course_' + course.id}"
+                           th:text="${course.courseTitle}" >Course Name</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary">Submit Selection</button>
+        </div>
+    </form>
+</div>
+<div th:unless="${#lists.isEmpty(authUser.selectedCourses)}" class="d-flex justify-content-center mt-5">
+    <div class="alert alert-success d-flex align-items-center shadow-sm" role="alert" style="max-width: 600px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-check-circle-fill me-2" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.97 10.03a.75.75 0 0 0 1.07 0l3.992-3.992a.75.75 0 1 0-1.06-1.06L7.5 8.439 6.03 6.97a.75.75 0 1 0-1.06 1.06l2 2z"/>
+        </svg>
+        <div>
+            You have already selected your courses.
+        </div>
+    </div>
+</div>
+
+<div th:replace="//footer :: footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

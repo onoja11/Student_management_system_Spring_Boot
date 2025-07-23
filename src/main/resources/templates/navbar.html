@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<!-- Navbar Fragment -->
+    <!-- navbar starts -->
+
+    <nav th:fragment="navbar" class="navbar navbar-expand-sm navbar-light bg-light shadow">
+        <div class="container">
+            <a class="navbar-brand" href="#">educate</a>
+            <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavId">
+                <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/home}" aria-current="page">Home
+                            <span class="visually-hidden">(current)</span></a>
+                    </li>
+                    <li class="nav-item" th:if="${authUser.role.name() == 'EXAM_OFFICER'}">
+                        <a class="nav-link" th:href="@{/course/}">Course</a>
+                    </li>
+                    <li class="nav-item" th:if="${authUser.role.name() == 'STUDENT'}">
+                        <a class="nav-link" th:href="@{/course/reg}">Course Registration</a>
+                    </li>
+                </ul>
+
+                <div class="my-2 d-flex my-lg-0">
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-primary text-decoration-none"
+                           href="#" id="userDropdown" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            <i class="ms-3" th:text="${authUser.username}"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" th:href="@{/students/profile}">Profile</a></li>
+                            <li>
+                                <form th:action="@{/logout}" method="post">
+                                    <button type="submit" class="dropdown-item text-decoration-none btn btn-md me-4 w-100 text-danger  d-none d-md-inline">  Logout</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+<!--     navbar ends -->
+</body>
+</html>
